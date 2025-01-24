@@ -10,9 +10,9 @@ const model = genAI.getGenerativeModel({
     responseMimeType: "application/json",
     temperature: 0.4, // Controls randomness; lower values produce more deterministic results
   },
-  systemInstruction: "You are an AI interviewer designed to conduct virtual job interviews. Be polite, clear, and constructive. Provide feedback in two sentences for every user response.",
+  systemInstruction:
+    "You are an AI interviewer designed to conduct virtual job interviews. Be polite, clear, and constructive. Provide feedback in two sentences for every user response.",
 });
-
 
 export const generateQuestions = async (inputText) => {
   try {
@@ -20,24 +20,35 @@ export const generateQuestions = async (inputText) => {
       You are tasked with creating job interview questions. Based on the following resume or job description, generate 5 relevant questions.
       Input: "${inputText}"
       Output: Provide the questions in a numbered list.
+      Sample Output: 
+      {
+  "interviewQuestions": [
+    "1.  Can you describe your experience and skills related to this position, highlighting any relevant projects or accomplishments?",
+    "2. What are your salary expectations for this role?",
+    "3.  Tell me about a time you faced a challenging situation at work. How did you handle it, and what did you learn from the experience?",
+    "4.  Why are you interested in this specific position and our company?",
+    "5. Where do you see yourself in five years, and how does this role fit into your career goals?"
+  ]
+}
+      
     `;
 
     const response = await model.generateContent(prompt);
-    const result = response.response.text(); 
-    console.log(result); 
-    
+    const result = response.response.text();
+    console.log(result);
+
     // Parse the JSON string
-    const parsedResult = JSON.parse(result); 
-    
+    const parsedResult = JSON.parse(result);
+
     // Access the interviewQuestions array
-    const output = parsedResult.interviewQuestions; 
-    
-    console.log(output); 
+    const output = parsedResult.interviewQuestions;
+
+    console.log(output);
 
     // Extract questions from the response (assumes numbered list in the output)
     const questions = output.map((line) => line.trim());
 
-    console.log(questions)
+    console.log(questions);
 
     return questions;
   } catch (error) {
@@ -45,7 +56,6 @@ export const generateQuestions = async (inputText) => {
     throw new Error("Failed to generate questions. Please try again.");
   }
 };
-
 
 export const generateFeedback = async (answer) => {
   try {
@@ -56,13 +66,13 @@ export const generateFeedback = async (answer) => {
     `;
 
     const response = await model.generateContent(prompt);
-    const result = response.response.text(); 
-    console.log(result); 
+    const result = response.response.text();
+    console.log(result);
 
     const parsedResult = JSON.parse(result); // Parse JSON if it's a stringified JSON
     const feedback = parsedResult.feedback;
 
-    console.log(feedback)
+    console.log(feedback);
 
     return feedback;
   } catch (error) {
@@ -70,7 +80,6 @@ export const generateFeedback = async (answer) => {
     throw new Error("Failed to generate feedback. Please try again.");
   }
 };
-
 
 export const generateSessionSummary = async (answers) => {
   try {
