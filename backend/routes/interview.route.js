@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/start', authUser,startInterview);
 router.get('/next-question/:sessionId', authUser, getNextQuestion);
-router.post('/submit-answer', authUser,submitAnswer);
+router.post('/submit-answer/:sessionId', authUser,submitAnswer);
 router.post('/end/:sessionId', authUser,endInterview);
 
 export default router;

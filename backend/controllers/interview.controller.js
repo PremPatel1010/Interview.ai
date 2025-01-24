@@ -4,8 +4,7 @@ import { generateFeedback, generateQuestions } from "../services/ai.service.js";
 
 export const startInterview = async (req, res) => {
   try {
-    const {userId} = req.userId;
-    console.log(userId)
+    const userId = req.userId;
     if (!userId) {
       return res.status(400).json({ error: "userId is required" });
     }
