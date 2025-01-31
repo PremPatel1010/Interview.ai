@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ShoppingCart, UserPlus, LogIn, LogOut, Lock, Menu, X, Mail, KeyRound, Eye, EyeOff, User } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useUserStore } from '../stores/user.store.js';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,10 +13,12 @@ const Signup = () => {
     confirmPassword: '',
     acceptTerms: false
   });
+  const {signup, loading} = useUserStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle signup logic here
+    console.log(formData);
+    signup(formData);
   };
 
   const handleChange = (e) => {

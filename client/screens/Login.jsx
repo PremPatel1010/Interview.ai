@@ -1,15 +1,25 @@
 import { useState } from 'react';
 import { ShoppingCart, UserPlus, LogIn, LogOut, Lock, Menu, X, Mail, KeyRound, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserStore } from '../stores/user.store.js';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {login , user} = useUserStore();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+    try {
+      await login(email, password);
+      if (user) {
+        navigate('/');
+      }
+    } catch (err) {
+      toast.error(err || 'An error occurred. Please try again.');
+    }
   };
 
   return (
