@@ -14,11 +14,9 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      if (user) {
-        navigate('/');
-      }
+      navigate('/');
     } catch (err) {
-      toast.error(err || 'An error occurred. Please try again.');
+      toast.error(err.message || 'An error occurred. Please try again.');
     }
   };
 

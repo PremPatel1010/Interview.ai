@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { ShoppingCart, UserPlus, LogIn, LogOut, Lock, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useUserStore } from '../stores/user.store';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const user = false;
-  const logout = () => {};
-  const isAdmin = false;
+  const {user, logout} = useUserStore();
+
+ 
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -33,7 +34,7 @@ const Navbar = () => {
 
           {/* Navigation Links - Desktop */}
           <nav className={`hidden lg:flex items-center space-x-6`}>
-            <NavLinks isAdmin={isAdmin} user={user} logout={logout} />
+            <NavLinks  user={user} logout={logout} />
           </nav>
         </div>
 
@@ -44,7 +45,7 @@ const Navbar = () => {
           } lg:hidden overflow-hidden transition-all duration-300 ease-in-out`}
         >
           <div className="py-4 space-y-4 flex flex-col items-start">
-            <MobileNavLinks isAdmin={isAdmin} user={user} logout={logout} />
+            <MobileNavLinks  user={user} logout={logout} />
           </div>
         </nav>
       </div>
@@ -52,7 +53,7 @@ const Navbar = () => {
   );
 };
 
-const NavLinks = ({ isAdmin, user, logout }) => (
+const NavLinks = ({  user, logout }) => (
   <>
     <Link
       to={"/"}
@@ -72,16 +73,6 @@ const NavLinks = ({ isAdmin, user, logout }) => (
     >
       Contact
     </Link>
-
-    {isAdmin && (
-      <Link
-        className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-md"
-        to={"/secret-dashboard"}
-      >
-        <Lock className="inline-block mr-2" size={18} />
-        <span>Dashboard</span>
-      </Link>
-    )}
 
     {user ? (
       <button
@@ -112,7 +103,7 @@ const NavLinks = ({ isAdmin, user, logout }) => (
   </>
 );
 
-const MobileNavLinks = ({ isAdmin, user, logout }) => (
+const MobileNavLinks = ({  user, logout }) => (
   <>
     <Link
       to={"/"}
@@ -133,16 +124,7 @@ const MobileNavLinks = ({ isAdmin, user, logout }) => (
       Contact
     </Link>
 
-    {isAdmin && (
-      <Link
-        className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-md w-full"
-        to={"/secret-dashboard"}
-      >
-        <Lock className="inline-block mr-2" size={18} />
-        <span>Dashboard</span>
-      </Link>
-    )}
-
+    
     {user ? (
       <button
         className="bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-lg flex items-center transition-colors shadow-md w-full"

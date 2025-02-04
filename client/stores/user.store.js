@@ -49,33 +49,34 @@ export const useUserStore = create((set, get) => ({
 			const res = await axios.post("/users/login", { email, password });
       toast.success("Logged in successfully");
 			set({ user: res.data, loading: false });
-      navigate('/');
 		} catch (error) {
 			set({ loading: false });
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
 
-	logout: async () => {
-		try {
-			await axios.post("/users/logout");
-		  set({ user: null});
-			toast.success("Logged out successfully");
-		} catch (error) {
-			toast.error("Failed to logout");
-			console.log(error);
-		}
-	} ,
+		logout: async () => {
+			try {
+				await axios.get("/users/logout");
+				set({ user: null });
+				toast.success("Logged out successfully");
+			} catch (error) {
+				toast.error("Failed to logout");
+				console.log(error);
+			}
+		},
 
-	checkAuth: async () => {
-		set({ checkingAuth: true });
+		checkAuth: async () => {
+			set({ checkingAuth: true });
 
-		try {
-			const response = await axios.get("/users/profile");
-			set({ user: response.data, checkingAuth: false });
-		} catch (error) {
-			set({ checkingAuth: false, user: null });
-		}
-	},
+			try {
+				const response = await axios.get("/users/profile", {
+					withCredentials: true // This will include cookies in the request
+				});
+				set({ user: response.data, checkingAuth: false });
+			} catch (error) {
+				set({ checkingAuth: false, user: null });
+			}
+		},
 
 }))
